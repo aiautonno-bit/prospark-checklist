@@ -426,40 +426,6 @@
         .overlay.hidden {
             display: none;
         }
-
-        .config-banner {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .config-banner h3 {
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-            color: #92400e;
-        }
-
-        .config-banner input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--gray-300);
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .config-banner button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
     </style>
 </head>
 <body>
@@ -484,15 +450,6 @@
     </div>
 
     <div class="container">
-        <!-- Configuration Banner (shown if webhooks not configured) -->
-        <div class="config-banner" id="configBanner">
-            <h3>Configure Webhook URLs</h3>
-            <p style="margin-bottom: 0.5rem; color: #92400e;">Enter your n8n webhook URLs:</p>
-            <input type="text" id="fetchUrl" placeholder="Fetch URL (e.g., https://your-n8n.com/webhook/prospark-checklist-fetch)">
-            <input type="text" id="submitUrl" placeholder="Submit URL (e.g., https://your-n8n.com/webhook/prospark-checklist-submit)">
-            <button onclick="saveConfig()">Save & Load Jobs</button>
-        </div>
-
         <!-- Loading State -->
         <div class="loading" id="loadingState">
             <div class="spinner"></div>
@@ -531,43 +488,20 @@
     </div>
 
     <script>
-        // Configuration
-        let CONFIG = {
-            FETCH_WEBHOOK_URL: localStorage.getItem('prospark_fetch_url') || '',
-            SUBMIT_WEBHOOK_URL: localStorage.getItem('prospark_submit_url') || ''
+        // Hardcoded webhook URLs - no manual input needed
+        const CONFIG = {
+            FETCH_WEBHOOK_URL: 'https://n8n.srv1213308.hstgr.cloud/webhook/prospark-checklist-fetch',
+            SUBMIT_WEBHOOK_URL: 'https://n8n.srv1213308.hstgr.cloud/webhook/prospark-checklist-submit'
         };
 
         // State
         let jobsData = null;
         let jobStatuses = {};
 
-        // Initialize
+        // Initialize - fetch jobs immediately on load
         document.addEventListener('DOMContentLoaded', () => {
-            if (CONFIG.FETCH_WEBHOOK_URL && CONFIG.SUBMIT_WEBHOOK_URL) {
-                document.getElementById('configBanner').classList.add('hidden');
-                fetchJobs();
-            } else {
-                document.getElementById('loadingState').classList.add('hidden');
-                document.getElementById('configBanner').classList.remove('hidden');
-            }
+            fetchJobs();
         });
-
-        function saveConfig() {
-            const fetchUrl = document.getElementById('fetchUrl').value.trim();
-            const submitUrl = document.getElementById('submitUrl').value.trim();
-
-            if (fetchUrl && submitUrl) {
-                localStorage.setItem('prospark_fetch_url', fetchUrl);
-                localStorage.setItem('prospark_submit_url', submitUrl);
-                CONFIG.FETCH_WEBHOOK_URL = fetchUrl;
-                CONFIG.SUBMIT_WEBHOOK_URL = submitUrl;
-                document.getElementById('configBanner').classList.add('hidden');
-                document.getElementById('loadingState').classList.remove('hidden');
-                fetchJobs();
-            } else {
-                alert('Please enter both webhook URLs');
-            }
-        }
 
         async function fetchJobs() {
             try {
@@ -595,7 +529,7 @@
             } catch (error) {
                 console.error('Error fetching jobs:', error);
                 document.getElementById('loadingState').innerHTML = `
-                    <p style="color: var(--danger);">Error loading jobs. Please check your webhook URL.</p>
+                    <p style="color: var(--danger);">Error loading jobs. Please check your connection.</p>
                     <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">
                         Retry
                     </button>
@@ -612,7 +546,6 @@
 
         function formatPhone(phone) {
             if (!phone || phone === 'No phone') return phone;
-            // Format NZ phone numbers
             const cleaned = phone.replace(/\D/g, '');
             if (cleaned.startsWith('64')) {
                 return '+64 ' + cleaned.slice(2, 4) + ' ' + cleaned.slice(4, 7) + ' ' + cleaned.slice(7);
@@ -685,7 +618,6 @@
                 </div>
             `).join('');
 
-            // Initialize status tracking
             jobs.forEach(job => {
                 jobStatuses[job.event_id] = {
                     event_id: job.event_id,
@@ -709,35 +641,28 @@
         }
 
         function setStatus(eventId, status) {
-            // Update state
             jobStatuses[eventId].status = status;
 
-            // Update UI
             const card = document.getElementById(`job-${eventId}`);
             const buttons = card.querySelectorAll('.status-btn');
             const reasonSection = document.getElementById(`reason-${eventId}`);
 
-            // Remove all selected states and card status classes
             buttons.forEach(btn => btn.classList.remove('selected'));
             card.classList.remove('completed', 'not-completed', 'no-show', 'rescheduled');
 
-            // Add selected state to clicked button
             const clickedBtn = card.querySelector(`.status-btn.${status.replace('_', '-')}`);
             if (clickedBtn) {
                 clickedBtn.classList.add('selected');
             }
 
-            // Add status class to card
             card.classList.add(status.replace('_', '-'));
 
-            // Show/hide reason section
             if (status === 'not_completed') {
                 reasonSection.classList.remove('hidden');
             } else {
                 reasonSection.classList.add('hidden');
             }
 
-            // Update submit button state
             checkSubmitReady();
         }
 
@@ -770,7 +695,6 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
 
-            // Validate all jobs have reasons if not_completed
             for (const job of Object.values(jobStatuses)) {
                 if (job.status === 'not_completed' && !job.reason) {
                     alert(`Please select a reason for ${job.customer_name}'s job`);
@@ -798,7 +722,6 @@
 
                 const result = await response.json();
 
-                // Show success message
                 document.getElementById('overlay').classList.remove('hidden');
                 document.getElementById('successMessage').classList.remove('hidden');
 

@@ -12,6 +12,8 @@
             --danger: #ef4444;
             --warning: #f59e0b;
             --info: #3b82f6;
+            --notify: #8b5cf6;
+            --notify-dark: #7c3aed;
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
@@ -21,11 +23,7 @@
             --gray-900: #111827;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -126,9 +124,7 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .job-card {
             background: white;
@@ -139,36 +135,17 @@
             transition: box-shadow 0.2s;
         }
 
-        .job-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
+        .job-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .job-card.priority { border-left: 4px solid var(--warning); }
+        .job-card.attention { border-left: 4px solid var(--danger); }
+        .job-card.completed .job-header { background: var(--success); color: white; }
+        .job-card.not-completed .job-header { background: var(--danger); color: white; }
+        .job-card.no-show .job-header { background: var(--gray-500); color: white; }
+        .job-card.rescheduled .job-header { background: var(--info); color: white; }
 
-        .job-card.priority {
-            border-left: 4px solid var(--warning);
-        }
-
-        .job-card.attention {
-            border-left: 4px solid var(--danger);
-        }
-
-        .job-card.completed .job-header {
-            background: var(--success);
-            color: white;
-        }
-
-        .job-card.not-completed .job-header {
-            background: var(--danger);
-            color: white;
-        }
-
-        .job-card.no-show .job-header {
-            background: var(--gray-500);
-            color: white;
-        }
-
-        .job-card.rescheduled .job-header {
-            background: var(--info);
-            color: white;
+        .job-card.notify-selected {
+            outline: 2px solid var(--notify);
+            outline-offset: -2px;
         }
 
         .priority-banner {
@@ -199,20 +176,10 @@
             border-bottom: 1px solid var(--gray-200);
         }
 
-        .customer-name {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
+        .customer-name { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .vehicle-info { font-size: 0.875rem; color: var(--gray-500); }
 
-        .vehicle-info {
-            font-size: 0.875rem;
-            color: var(--gray-500);
-        }
-
-        .job-body {
-            padding: 1rem;
-        }
+        .job-body { padding: 1rem; }
 
         .issue-summary {
             background: var(--gray-50);
@@ -244,9 +211,7 @@
             margin-bottom: 1rem;
         }
 
-        .phone-number:hover {
-            background: var(--gray-200);
-        }
+        .phone-number:hover { background: var(--gray-200); }
 
         .status-buttons {
             display: grid;
@@ -270,28 +235,48 @@
             transition: all 0.2s;
         }
 
-        .status-btn:hover {
-            border-color: var(--gray-300);
-            background: var(--gray-50);
-        }
-
-        .status-btn.selected {
-            border-color: currentColor;
-            background: currentColor;
-            color: white;
-        }
-
+        .status-btn:hover { border-color: var(--gray-300); background: var(--gray-50); }
         .status-btn.completed { color: var(--success); }
         .status-btn.completed.selected { background: var(--success); border-color: var(--success); color: white; }
-
         .status-btn.not-completed { color: var(--danger); }
         .status-btn.not-completed.selected { background: var(--danger); border-color: var(--danger); color: white; }
-
         .status-btn.no-show { color: var(--gray-500); }
         .status-btn.no-show.selected { background: var(--gray-500); border-color: var(--gray-500); color: white; }
-
         .status-btn.rescheduled { color: var(--info); }
         .status-btn.rescheduled.selected { background: var(--info); border-color: var(--info); color: white; }
+
+        /* Notify button */
+        .notify-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px dashed var(--gray-300);
+            border-radius: 8px;
+            background: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .notify-btn:hover {
+            border-color: var(--notify);
+            color: var(--notify);
+            background: #f5f3ff;
+        }
+
+        .notify-btn.selected {
+            border-style: solid;
+            border-color: var(--notify);
+            background: #f5f3ff;
+            color: var(--notify-dark);
+            font-weight: 600;
+        }
 
         .reason-section {
             margin-top: 1rem;
@@ -299,9 +284,7 @@
             border-top: 1px solid var(--gray-200);
         }
 
-        .reason-section.hidden {
-            display: none;
-        }
+        .reason-section.hidden { display: none; }
 
         label {
             display: block;
@@ -328,10 +311,7 @@
             box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
+        textarea { resize: vertical; min-height: 80px; }
 
         .submit-section {
             position: sticky;
@@ -340,7 +320,31 @@
             padding: 1rem;
             border-top: 1px solid var(--gray-200);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
+
+        .notify-send-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--notify);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .notify-send-btn:hover { background: var(--notify-dark); }
+        .notify-send-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
+        .notify-send-btn.hidden { display: none; }
 
         .submit-btn {
             width: 100%;
@@ -355,20 +359,14 @@
             transition: background 0.2s;
         }
 
-        .submit-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .submit-btn:disabled {
-            background: var(--gray-300);
-            cursor: not-allowed;
-        }
+        .submit-btn:hover { background: var(--primary-dark); }
+        .submit-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
 
         .submit-warning {
             text-align: center;
             font-size: 0.75rem;
             color: var(--danger);
-            margin-top: 0.5rem;
+            margin-top: 0.25rem;
         }
 
         .empty-state {
@@ -377,11 +375,7 @@
             color: var(--gray-500);
         }
 
-        .empty-state h2 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--gray-700);
-        }
+        .empty-state h2 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--gray-700); }
 
         .success-message {
             position: fixed;
@@ -394,11 +388,10 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             text-align: center;
             z-index: 1000;
+            min-width: 280px;
         }
 
-        .success-message.hidden {
-            display: none;
-        }
+        .success-message.hidden { display: none; }
 
         .success-icon {
             width: 64px;
@@ -413,19 +406,27 @@
             font-size: 2rem;
         }
 
+        .notify-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--notify);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
+
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 999;
         }
 
-        .overlay.hidden {
-            display: none;
-        }
+        .overlay.hidden { display: none; }
     </style>
 </head>
 <body>
@@ -450,25 +451,24 @@
     </div>
 
     <div class="container">
-        <!-- Loading State -->
         <div class="loading" id="loadingState">
             <div class="spinner"></div>
             <p style="margin-top: 1rem;">Loading today's jobs...</p>
         </div>
 
-        <!-- Empty State -->
         <div class="empty-state hidden" id="emptyState">
             <h2>No Jobs Today</h2>
             <p>There are no diagnostic appointments scheduled for today.</p>
         </div>
 
-        <!-- Jobs Container -->
         <div id="jobsContainer"></div>
     </div>
 
-    <!-- Submit Section -->
     <div class="submit-section hidden" id="submitSection">
-        <button class="submit-btn" id="submitBtn" onclick="submitChecklist()">
+        <button class="notify-send-btn hidden" id="notifySendBtn" onclick="confirmNotify()">
+            <span>📱</span> <span id="notifyBtnLabel">Send Job Complete SMS</span>
+        </button>
+        <button class="submit-btn" id="submitBtn" onclick="submitChecklist()" disabled>
             Submit Daily Checklist
         </button>
         <p class="submit-warning hidden" id="submitWarning">
@@ -476,8 +476,24 @@
         </p>
     </div>
 
-    <!-- Success Overlay -->
     <div class="overlay hidden" id="overlay"></div>
+
+    <!-- Notify Confirm Dialog -->
+    <div class="success-message hidden" id="notifyConfirm">
+        <div class="notify-icon">📱</div>
+        <h2 style="margin-bottom: 0.5rem;">Send Notifications?</h2>
+        <p id="notifyConfirmDetails" style="color: var(--gray-500); font-size: 0.875rem; margin-bottom: 1.5rem;"></p>
+        <div style="display: flex; gap: 0.75rem;">
+            <button onclick="cancelNotify()" style="flex:1; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 8px; background: white; cursor: pointer; font-weight: 600;">
+                Cancel
+            </button>
+            <button onclick="sendNotifications()" style="flex:1; padding: 0.75rem; background: var(--notify); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                Send SMS
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Overlay -->
     <div class="success-message hidden" id="successMessage">
         <div class="success-icon">&#10003;</div>
         <h2>Checklist Submitted!</h2>
@@ -487,37 +503,39 @@
         </button>
     </div>
 
+    <!-- Notify Sent Overlay -->
+    <div class="success-message hidden" id="notifySentMessage">
+        <div class="notify-icon">✓</div>
+        <h2>SMS Sent!</h2>
+        <p id="notifySentDetails" style="color: var(--gray-500); margin-top: 0.5rem;"></p>
+        <button onclick="closeNotifySent()" style="margin-top: 1rem; padding: 0.75rem 2rem; background: var(--notify); color: white; border: none; border-radius: 8px; cursor: pointer;">
+            Done
+        </button>
+    </div>
+
     <script>
-        // Hardcoded webhook URLs - no manual input needed
         const CONFIG = {
             FETCH_WEBHOOK_URL: 'https://n8n.srv1213308.hstgr.cloud/webhook/prospark-checklist-fetch',
-            SUBMIT_WEBHOOK_URL: 'https://n8n.srv1213308.hstgr.cloud/webhook/prospark-checklist-submit'
+            SUBMIT_WEBHOOK_URL: 'https://n8n.srv1213308.hstgr.cloud/webhook/prospark-checklist-submit',
+            NOTIFY_WEBHOOK_URL: 'https://n8n.srv1213308.hstgr.cloud/webhook/prospark-job-complete-notify'
         };
 
-        // State
         let jobsData = null;
         let jobStatuses = {};
+        let notifySelected = {};
 
-        // Initialize - fetch jobs immediately on load
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchJobs();
-        });
+        document.addEventListener('DOMContentLoaded', () => { fetchJobs(); });
 
         async function fetchJobs() {
             try {
                 const response = await fetch(CONFIG.FETCH_WEBHOOK_URL);
                 jobsData = await response.json();
 
-                // Update header
                 document.getElementById('dateDisplay').textContent =
                     `${jobsData.day_name}, ${formatDate(jobsData.date)}`;
-
-                // Update stats
                 document.getElementById('totalCount').textContent = jobsData.total_jobs;
                 document.getElementById('priorityCount').textContent = jobsData.priority_jobs;
                 document.getElementById('availableCount').textContent = jobsData.available_slots;
-
-                // Hide loading
                 document.getElementById('loadingState').classList.add('hidden');
 
                 if (jobsData.jobs.length === 0) {
@@ -527,20 +545,17 @@
                     document.getElementById('submitSection').classList.remove('hidden');
                 }
             } catch (error) {
-                console.error('Error fetching jobs:', error);
                 document.getElementById('loadingState').innerHTML = `
                     <p style="color: var(--danger);">Error loading jobs. Please check your connection.</p>
-                    <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">
-                        Retry
-                    </button>
+                    <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">Retry</button>
                 `;
             }
         }
 
         function formatDate(dateStr) {
             const [year, month, day] = dateStr.split('-');
-            const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                          'July', 'August', 'September', 'October', 'November', 'December'];
+            const months = ['January','February','March','April','May','June',
+                            'July','August','September','October','November','December'];
             return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
         }
 
@@ -555,17 +570,17 @@
 
         function renderJobs(jobs) {
             const container = document.getElementById('jobsContainer');
-            container.innerHTML = jobs.map((job, index) => `
+            container.innerHTML = jobs.map((job) => `
                 <div class="job-card ${job.is_priority ? 'priority' : ''} ${job.needs_attention ? 'attention' : ''}"
                      id="job-${job.event_id}" data-event-id="${job.event_id}">
 
                     ${job.needs_attention ? `
                         <div class="attention-banner">
-                            <span>&#9888;</span> ATTENTION: Carried over ${job.carryover_count}+ times - needs resolution
+                            <span>⚠</span> ATTENTION: Carried over ${job.carryover_count}+ times - needs resolution
                         </div>
                     ` : job.is_priority ? `
                         <div class="priority-banner">
-                            <span>&#9888;</span> PRIORITY - Carried over from ${job.carried_over_from || 'previous day'}
+                            <span>⚠</span> PRIORITY - Carried over from ${job.carried_over_from || 'previous day'}
                         </div>
                     ` : ''}
 
@@ -581,23 +596,27 @@
                         </div>
 
                         <a href="tel:${job.phone_number}" class="phone-number">
-                            <span>&#128222;</span> ${formatPhone(job.phone_number)}
+                            <span>📞</span> ${formatPhone(job.phone_number)}
                         </a>
 
                         <div class="status-buttons">
                             <button class="status-btn completed" onclick="setStatus('${job.event_id}', 'completed')">
-                                <span>&#10003;</span> Completed
+                                <span>✓</span> Completed
                             </button>
                             <button class="status-btn not-completed" onclick="setStatus('${job.event_id}', 'not_completed')">
-                                <span>&#10007;</span> Not Done
+                                <span>✗</span> Not Done
                             </button>
                             <button class="status-btn no-show" onclick="setStatus('${job.event_id}', 'no_show')">
-                                <span>&#128260;</span> No-Show
+                                <span>🔄</span> No-Show
                             </button>
                             <button class="status-btn rescheduled" onclick="setStatus('${job.event_id}', 'rescheduled')">
-                                <span>&#128222;</span> Rescheduled
+                                <span>📞</span> Rescheduled
                             </button>
                         </div>
+
+                        <button class="notify-btn" id="notify-btn-${job.event_id}" onclick="toggleNotify('${job.event_id}', '${escapeHtml(job.customer_name)}', '${job.phone_number}', '${escapeHtml(job.vehicle)}')">
+                            <span>📱</span> Notify Customer — Job Complete
+                        </button>
 
                         <div class="reason-section hidden" id="reason-${job.event_id}">
                             <label for="reason-select-${job.event_id}">Reason</label>
@@ -609,7 +628,6 @@
                                 <option value="customer_delayed">Customer arrived late</option>
                                 <option value="other">Other</option>
                             </select>
-
                             <label for="notes-${job.event_id}">Notes (optional)</label>
                             <textarea id="notes-${job.event_id}" placeholder="Add any additional notes..."
                                       onchange="updateNotes('${job.event_id}')"></textarea>
@@ -631,18 +649,108 @@
                     carryover_count: job.carryover_count || 0,
                     carryover_dates: job.carryover_dates || []
                 };
+                notifySelected[job.event_id] = false;
             });
         }
 
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
+        function toggleNotify(eventId, customerName, phoneNumber, vehicle) {
+            const isSelected = !notifySelected[eventId];
+            notifySelected[eventId] = isSelected;
+
+            const btn = document.getElementById(`notify-btn-${eventId}`);
+            const card = document.getElementById(`job-${eventId}`);
+
+            if (isSelected) {
+                btn.classList.add('selected');
+                btn.innerHTML = `<span>✓</span> Notifying: ${customerName}`;
+                card.classList.add('notify-selected');
+            } else {
+                btn.classList.remove('selected');
+                btn.innerHTML = `<span>📱</span> Notify Customer — Job Complete`;
+                card.classList.remove('notify-selected');
+            }
+
+            updateNotifyButton();
+        }
+
+        function updateNotifyButton() {
+            const count = Object.values(notifySelected).filter(Boolean).length;
+            const notifyBtn = document.getElementById('notifySendBtn');
+            const label = document.getElementById('notifyBtnLabel');
+
+            if (count > 0) {
+                notifyBtn.classList.remove('hidden');
+                label.textContent = `Send Job Complete SMS (${count} customer${count > 1 ? 's' : ''})`;
+            } else {
+                notifyBtn.classList.add('hidden');
+            }
+        }
+
+        function confirmNotify() {
+            const selectedJobs = Object.entries(notifySelected)
+                .filter(([, v]) => v)
+                .map(([id]) => jobStatuses[id]);
+
+            const names = selectedJobs.map(j => j.customer_name).join(', ');
+            document.getElementById('notifyConfirmDetails').textContent =
+                `An SMS will be sent to: ${names}`;
+
+            document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('notifyConfirm').classList.remove('hidden');
+        }
+
+        function cancelNotify() {
+            document.getElementById('overlay').classList.add('hidden');
+            document.getElementById('notifyConfirm').classList.add('hidden');
+        }
+
+        async function sendNotifications() {
+            document.getElementById('notifyConfirm').classList.add('hidden');
+
+            const selectedJobs = Object.entries(notifySelected)
+                .filter(([, v]) => v)
+                .map(([id]) => jobStatuses[id]);
+
+            try {
+                await fetch(CONFIG.NOTIFY_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobs: selectedJobs, sent_at: new Date().toISOString() })
+                });
+            } catch (e) {
+                console.log('Notify webhook sent');
+            }
+
+            // Clear selections
+            selectedJobs.forEach(job => {
+                notifySelected[job.event_id] = false;
+                const btn = document.getElementById(`notify-btn-${job.event_id}`);
+                const card = document.getElementById(`job-${job.event_id}`);
+                if (btn) { btn.classList.remove('selected'); btn.innerHTML = `<span>📱</span> Notify Customer — Job Complete`; }
+                if (card) card.classList.remove('notify-selected');
+            });
+
+            updateNotifyButton();
+
+            document.getElementById('notifySentDetails').textContent =
+                `SMS sent to ${selectedJobs.length} customer${selectedJobs.length > 1 ? 's' : ''}.`;
+            document.getElementById('notifySentMessage').classList.remove('hidden');
+        }
+
+        function closeNotifySent() {
+            document.getElementById('overlay').classList.add('hidden');
+            document.getElementById('notifySentMessage').classList.add('hidden');
+        }
+
         function setStatus(eventId, status) {
             jobStatuses[eventId].status = status;
-
             const card = document.getElementById(`job-${eventId}`);
             const buttons = card.querySelectorAll('.status-btn');
             const reasonSection = document.getElementById(`reason-${eventId}`);
@@ -651,10 +759,7 @@
             card.classList.remove('completed', 'not-completed', 'no-show', 'rescheduled');
 
             const clickedBtn = card.querySelector(`.status-btn.${status.replace('_', '-')}`);
-            if (clickedBtn) {
-                clickedBtn.classList.add('selected');
-            }
-
+            if (clickedBtn) clickedBtn.classList.add('selected');
             card.classList.add(status.replace('_', '-'));
 
             if (status === 'not_completed') {
@@ -667,13 +772,11 @@
         }
 
         function updateReason(eventId) {
-            const select = document.getElementById(`reason-select-${eventId}`);
-            jobStatuses[eventId].reason = select.value;
+            jobStatuses[eventId].reason = document.getElementById(`reason-select-${eventId}`).value;
         }
 
         function updateNotes(eventId) {
-            const textarea = document.getElementById(`notes-${eventId}`);
-            jobStatuses[eventId].notes = textarea.value;
+            jobStatuses[eventId].notes = document.getElementById(`notes-${eventId}`).value;
         }
 
         function checkSubmitReady() {
@@ -714,25 +817,19 @@
             try {
                 const response = await fetch(CONFIG.SUBMIT_WEBHOOK_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
                 const result = await response.json();
-
                 document.getElementById('overlay').classList.remove('hidden');
                 document.getElementById('successMessage').classList.remove('hidden');
 
                 let detailsText = `${result.stats?.completed || 0} completed, ${result.stats?.carried_over || 0} carried over`;
-                if (result.attention_needed > 0) {
-                    detailsText += ` (${result.attention_needed} need attention)`;
-                }
+                if (result.attention_needed > 0) detailsText += ` (${result.attention_needed} need attention)`;
                 document.getElementById('successDetails').textContent = detailsText;
 
             } catch (error) {
-                console.error('Error submitting checklist:', error);
                 alert('Error submitting checklist. Please try again.');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Daily Checklist';
